@@ -48,6 +48,8 @@ public class CheetahConfigRegistry {
 
     private Map<String, ESBConfigHolder> configurations = new HashMap<>();
 
+    private TypeConverterRegistry typeConverterRegistry;
+
     public static CheetahConfigRegistry getInstance() {
         return cheetahConfigRegistry;
     }
@@ -167,6 +169,8 @@ public class CheetahConfigRegistry {
     public void unregisterOutboundEndpoint(OutboundEndpoint outboundEndpoint) {
         outBoundEndpointMap.remove(outboundEndpoint);
     }
+
+
 
 
 }
