@@ -177,8 +177,6 @@ public class CheetahConfigRegistry {
     public TypeConverter getTypeConverter() {
         if (typeConverter == null) {
             synchronized (this) {
-                // we can synchronize on this as there is only one instance
-                // of the camel context (its the container)
                 typeConverter = createTypeConverter();
                 try {
                     // must add service eager
@@ -202,6 +200,17 @@ public class CheetahConfigRegistry {
             }
         }
         return typeConverterRegistry;
+    }
+
+    protected TypeConverter createTypeConverter() {
+        BaseTypeConverterRegistry answer;
+        if (isLazyLoadTypeConverters()) {
+            answer = new LazyLoadingTypeConverter(packageScanClassResolver, getInjector(), getDefaultFactoryFinder());
+        } else {
+            answer = new DefaultTypeConverter(packageScanClassResolver, getInjector(), getDefaultFactoryFinder());
+        }
+        setTypeConverterRegistry(answer);
+        return answer;
     }
 
 
