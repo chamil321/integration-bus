@@ -1,28 +1,24 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/*
+ * Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+ * <p>
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
 import java.util.List;
-
-//import org.apache.camel.LoggingLevel;
-//import org.apache.camel.StaticService;
-//import org.apache.camel.TypeConverter;
-//import org.apache.camel.TypeConverterExists;
-//import org.apache.camel.TypeConverters;
 
 /**
  * Registry for type converters.
@@ -32,7 +28,7 @@ import java.util.List;
  *
  * @version
  */
-public interface TypeConverterRegistry{
+public interface TypeConverterRegistry {
 
     /**
      * Utilization statistics of the this registry.
@@ -85,7 +81,7 @@ public interface TypeConverterRegistry{
     /**
      * Registers a new type converter.
      * <p/>
-     * This method may throw {@link org.apache.camel.TypeConverterExistsException} if configured to fail if an existing
+     * This method may throw {@link TypeConverterExistsException} if configured to fail if an existing
      * type converter already exists
      *
      * @param toType        the type to convert to
@@ -108,7 +104,7 @@ public interface TypeConverterRegistry{
      *
      * @param typeConverters class which implements the type converters
      */
-//    void addTypeConverters(TypeConverters typeConverters);
+    //    void addTypeConverters(TypeConverters typeConverters);
 
     /**
      * Registers a new fallback type converter

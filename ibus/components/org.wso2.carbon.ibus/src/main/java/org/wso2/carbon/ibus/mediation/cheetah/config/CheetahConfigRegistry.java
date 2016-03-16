@@ -20,6 +20,8 @@ package org.wso2.carbon.ibus.mediation.cheetah.config;
 
 
 import org.wso2.carbon.ibus.mediation.cheetah.flow.Pipeline;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.TypeConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.TypeConverterRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.InboundEndpoint;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.manager.InboundEndpointManager;
 import org.wso2.carbon.ibus.mediation.cheetah.outbound.OutboundEndpoint;
@@ -49,6 +51,8 @@ public class CheetahConfigRegistry {
     private Map<String, ESBConfigHolder> configurations = new HashMap<>();
 
     private TypeConverterRegistry typeConverterRegistry;
+
+    private TypeConverter typeConverter;
 
     public static CheetahConfigRegistry getInstance() {
         return cheetahConfigRegistry;
@@ -168,6 +172,36 @@ public class CheetahConfigRegistry {
 
     public void unregisterOutboundEndpoint(OutboundEndpoint outboundEndpoint) {
         outBoundEndpointMap.remove(outboundEndpoint);
+    }
+
+    public TypeConverter getTypeConverter() {
+        if (typeConverter == null) {
+            synchronized (this) {
+                // we can synchronize on this as there is only one instance
+                // of the camel context (its the container)
+                typeConverter = createTypeConverter();
+                try {
+                    // must add service eager
+                    addService(typeConverter);
+                } catch (Exception e) {
+                    throw ObjectHelper.wrapRuntimeCamelException(e);
+                }
+            }
+        }
+        return typeConverter;
+    }
+
+    public TypeConverterRegistry getTypeConverterRegistry() {
+        if (typeConverterRegistry == null) {
+            // init type converter as its lazy
+            if (typeConverter == null) {
+                getTypeConverter();
+            }
+            if (typeConverter instanceof TypeConverterRegistry) {
+                typeConverterRegistry = (TypeConverterRegistry) typeConverter;
+            }
+        }
+        return typeConverterRegistry;
     }
 
 
