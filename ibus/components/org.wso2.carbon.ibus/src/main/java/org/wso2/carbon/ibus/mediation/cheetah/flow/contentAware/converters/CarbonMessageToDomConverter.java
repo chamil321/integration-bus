@@ -16,17 +16,17 @@
  * under the License.
  */
 
-package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
+package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters;
 
-import javax.xml.bind.annotation.XmlEnum;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
+import org.wso2.carbon.messaging.CarbonMessage;
 
 /**
- * What to do if attempting to add a duplicate type converter
- *
- * @version
+ * This converts CarbonMessage to DomSource
  */
-@XmlEnum public enum TypeConverterExists {
-
-    Override, Ignore, Fail
-
+public class CarbonMessageToDomConverter extends AbstractTypeConverter {
+    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+        return null;
+    }
 }

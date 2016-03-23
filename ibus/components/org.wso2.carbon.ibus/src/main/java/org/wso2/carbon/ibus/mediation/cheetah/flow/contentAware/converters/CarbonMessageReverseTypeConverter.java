@@ -16,40 +16,38 @@
  * under the License.
  */
 
+package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters;
 
-package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.support.TypeConverterSupport;
 import org.apache.log4j.Logger;
-import org.wso2.carbon.gateway.internal.common.CarbonGatewayConstants;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
 import org.wso2.carbon.messaging.CarbonMessage;
 import org.wso2.carbon.messaging.DefaultCarbonMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
-
 /**
  * A type converter which is used to convert to and from CarbonMessage to other types
  * Specailly in case of content aware mediation
  */
 
-public class CarbonMessageReverseTypeConverter extends TypeConverterSupport {
+public class CarbonMessageReverseTypeConverter extends AbstractTypeConverter {
     private static final Logger log = Logger.getLogger(CarbonMessageTypeConverter.class);
 
-    @SuppressWarnings("unchecked")
+    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+        return null;
+    }
 
-    public <T> T convertTo(Class<T> type, Exchange exchange, Object value) {
+    @Override public <T> T convert(Object value) throws TypeConversionException {
         if (value instanceof String) {
             try {
                 CarbonMessage carbonMessage = new DefaultCarbonMessage();
                 ByteBuffer byteBuffer = ByteBuffer.wrap(((String) value).getBytes("UTF-8"));
                 //Set the content length of the new message
-                carbonMessage.setProperty(CarbonGatewayConstants.HTTP_CONTENT_LENGTH,
-                        String.valueOf(byteBuffer.limit()));
+                carbonMessage.setProperty("Content-Length", String.valueOf(byteBuffer.limit()));
                 carbonMessage.addMessageBody(byteBuffer);
-                carbonMessage.setEomAdded(true);
+                carbonMessage.setEndOfMsgAdded(true);
                 return (T) carbonMessage;
             } catch (UnsupportedEncodingException e) {
                 log.error("Encoding type is not supported", e);
@@ -57,16 +55,4 @@ public class CarbonMessageReverseTypeConverter extends TypeConverterSupport {
         }
         return null;
     }
-
-    /**
-     * This method needs to return true for subsequent executions of the same type converter.
-     *
-     * @return
-     */
-    @Override
-    public boolean allowNull() {
-        return true;
-    }
-
-
 }

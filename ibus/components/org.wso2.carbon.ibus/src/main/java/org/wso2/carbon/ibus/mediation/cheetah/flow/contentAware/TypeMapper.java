@@ -19,26 +19,45 @@
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
 /**
- * Exception when failing to add type converters due there is already an existing type converter.
+ * Created by chamile on 3/16/16.
  */
-public class TypeConverterExistsException extends Exception {
+public class TypeMapper {
 
-    private final transient Class<?> toType;
-    private final transient Class<?> fromType;
+    private final String toType;
 
-    public TypeConverterExistsException(Class<?> toType, Class<?> fromType) {
-        super("Failed to add type converter because a type converter exists. " + fromType + " -> " + toType);
+    private final String fromType;
+
+    public TypeMapper(String toType , String fromType){
         this.toType = toType;
         this.fromType = fromType;
     }
 
-    public Class<?> getToType() {
+    public boolean equals(Object object) {
+        if (object instanceof TypeMapper) {
+            TypeMapper typeMapper = (TypeMapper) object;
+            return this.fromType.equals(typeMapper.fromType)
+                    && this.toType.equals(typeMapper.toType);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        int answer = 0;
+        if (toType != null && fromType != null){
+            answer = 23 +(fromType+toType).hashCode();
+        }
+        return answer;
+    }
+
+    public String toString() {
+        return "[" + fromType + "=>" + toType + "]";
+    }
+
+    public String getToType() {
         return toType;
     }
 
-    public Class<?> getFromType() {
+    public String getFromType() {
         return fromType;
     }
 }
-
-

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
+package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions;
 
 /**
  * Exception when failing during type conversion.
