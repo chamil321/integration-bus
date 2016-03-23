@@ -17,16 +17,17 @@
 
 package org.wso2.carbon.ibus.util;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 
-
 /**
- * A Gateway specific implementation to convert ByteBuffer queue to
+ * An implementation of InputStream to convert ByteBuffer queue to
  * an input stream
  */
 
@@ -34,7 +35,7 @@ public class ByteBufferBackedInputStream extends InputStream {
 
     ByteBuffer buf;
     BlockingQueue<ByteBuffer> buffersQueue;
-    private static final Logger log = Logger.getLogger(ByteBufferBackedInputStream.class);
+    private static final Logger log = LoggerFactory.getLogger(ByteBufferBackedInputStream.class);
 
     public ByteBufferBackedInputStream(ByteBuffer buf) {
         this.buf = buf;
@@ -62,8 +63,7 @@ public class ByteBufferBackedInputStream extends InputStream {
         return buf.get() & 0xFF;
     }
 
-    public int read(byte[] bytes, int off, int len)
-            throws IOException {
+    public int read(byte[] bytes, int off, int len) throws IOException {
         if (!buf.hasRemaining()) {
             if (!buffersQueue.isEmpty()) {
                 getBuf();
@@ -86,4 +86,3 @@ public class ByteBufferBackedInputStream extends InputStream {
 
     }
 }
-
