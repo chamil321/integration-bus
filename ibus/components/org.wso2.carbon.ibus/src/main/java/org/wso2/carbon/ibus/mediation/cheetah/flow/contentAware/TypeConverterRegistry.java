@@ -121,7 +121,7 @@ public interface TypeConverterRegistry {
      * @param fromType      the type to convert from
      * @return the type converter or <tt>null</tt> if not found.
      */
-    TypeConverter lookup(Class<?> toType, Class<?> fromType);
+    TypeConverter lookup(String toType, String fromType);
 
     /**
      * Gets a read-only list of the type converter from / to classes
@@ -130,19 +130,19 @@ public interface TypeConverterRegistry {
      */
     List<Class<?>[]> listAllTypeConvertersFromTo();
 
-    /**
-     * Sets the injector to be used for creating new instances during type conversions.
-     *
-     * @param injector the injector
-     */
-    void setInjector(Injector injector);
+//    /**
+//     * Sets the injector to be used for creating new instances during type conversions.
+//     *
+//     * @param injector the injector
+//     */
+//    void setInjector(Injector injector);
 
-    /**
-     * Gets the injector
-     *
-     * @return the injector
-     */
-    Injector getInjector();
+//    /**
+//     * Gets the injector
+//     *
+//     * @return the injector
+//     */
+//    Injector getInjector();
 
     /**
      * Gets the utilization statistics of this type converter registry

@@ -54,7 +54,7 @@ public class Pipeline {
         this.name = name;
     }
 
-    public boolean receive(CarbonMessage carbonMessage, CarbonCallback carbonCallback) {
+    public boolean receive(CarbonMessage cMsg, CarbonCallback carbonCallback) {
 
         try {
             // For Error handling
@@ -67,13 +67,13 @@ public class Pipeline {
 
                 errorHandlerMediators = ePipeline.getMediators();
                 if (errorHandlerMediators != null && errorHandlerMediators.getMediators().size() > 0) {
-                    carbonMessage.getFaultHandlerStack().push
+                    cMsg.getFaultHandlerStack().push
                             (new CheetahErrorHandler(Constants.CHEETAH_ERROR_HANDLER, errorHandlerMediators));
                 }
 
             }
 
-            return mediators.getFirstMediator().receive(carbonMessage, carbonCallback);
+            return mediators.getFirstMediator().receive(cMsg, carbonCallback);
         } catch (Exception e) {
             log.error("Error while mediating", e);
             return false;

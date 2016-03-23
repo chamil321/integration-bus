@@ -63,13 +63,12 @@ public abstract class InboundEndpoint {
     /**
      * Process the message
      *
-     * @param cMsg     Carbon Message
+     * @param cMsg     Carbon Message Wrapper
      * @param callback Callback to execute response flow
      * @return whether forward processing is successful
      */
     public boolean receive(CarbonMessage cMsg, CarbonCallback callback) {
-        return CheetahConfigRegistry.getInstance().getPipeline(getPipeline()).receive(cMsg, callback);
+        return CheetahConfigRegistry.getInstance().getPipeline(getPipeline())
+                .receive(cMsg, callback);
     }
-
-
 }

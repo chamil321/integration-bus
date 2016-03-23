@@ -18,6 +18,10 @@
 
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
+import org.wso2.carbon.messaging.CarbonMessage;
+
+import java.io.InputStream;
+
 /**
  * A pluggable strategy to be able to convert objects <a
  * href="http://camel.apache.org/type-converter.html">to different
@@ -51,13 +55,13 @@ public interface TypeConverter {
      * Used when conversion requires extra information from the current
      * exchange (such as encoding).
      *
-     * @param type the requested type
-     * @param exchange the current exchange
-     * @param value the value to be converted
+     * @param sourceType the requested type
+     * @param cMsg the current CarbonMessage
+     * @param targetType the value to be converted
      * @return the converted value, or <tt>null</tt> if not possible to convert
      * @throws TypeConversionException is thrown if error during type conversion
      */
-    <T> T convertTo(Class<T> type, Exchange exchange, Object value) throws TypeConversionException;
+    InputStream convertTo(String sourceType, CarbonMessage cMsg, String targetType) throws TypeConversionException;
 
     /**
      * Converts the value to the specified type
@@ -78,13 +82,13 @@ public interface TypeConverter {
      * exchange (such as encoding).
      *
      * @param type the requested type
-     * @param exchange the current exchange
+     * @param cMsg the current CarbonMessage
      * @param value the value to be converted
      * @return the converted value, is never <tt>null</tt>
      * @throws TypeConversionException is thrown if error during type conversion
      * @throws NoTypeConversionAvailableException if no type converters exists to convert to the given type
      */
-    <T> T mandatoryConvertTo(Class<T> type, Exchange exchange, Object value)
+    <T> T mandatoryConvertTo(Class<T> type, CarbonMessage cMsg, Object value)
             throws TypeConversionException, NoTypeConversionAvailableException;
 
     /**
@@ -110,10 +114,10 @@ public interface TypeConverter {
      * exchange (such as encoding).
      *
      * @param type the requested type
-     * @param exchange the current exchange
+     * @param cMsg the current CarbonMessage
      * @param value the value to be converted
      * @return the converted value, or <tt>null</tt> if not possible to convert
      */
-    <T> T tryConvertTo(Class<T> type, Exchange exchange, Object value);
+    <T> T tryConvertTo(Class<T> type, CarbonMessage cMsg, Object value);
 
 }

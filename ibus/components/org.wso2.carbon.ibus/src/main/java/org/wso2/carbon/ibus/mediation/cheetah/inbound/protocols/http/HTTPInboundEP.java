@@ -19,7 +19,8 @@ package org.wso2.carbon.ibus.mediation.cheetah.inbound.protocols.http;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.CarbonMessageWrapper;
+import org.wso2.carbon.ibus.mediation.cheetah.config.CheetahConfigRegistry;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.*;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.InboundEndpoint;
 import org.wso2.carbon.messaging.CarbonCallback;
 import org.wso2.carbon.messaging.CarbonMessage;
@@ -90,13 +91,15 @@ public class HTTPInboundEP extends InboundEndpoint {
     public boolean receive(CarbonMessage cMsg, CarbonCallback callback) {
         if (log.isDebugEnabled()) {
             log.debug("HTTP Endpoint : " + getName() + " received the message");
-            cMsg.getHeaders().get("Content-Type");
         }
+        
+        String targetType = cMsg.getHeader("Content-Type");
+        CheetahConfigRegistry configRegistry = CheetahConfigRegistry.getInstance();
 
-        CarbonMessageWrapper cMsgWrapper = new CarbonMessageWrapper(cMsg);
+        Object convertedBody = ConversionManager.getInstance()
+                                        .convertTo(cMsg, MIMEType.INPUT_STREAM, targetType);
 
-        super.receive(cMsg, callback);
-        return true;
+        return configRegistry.getPipeline(getPipeline()).receive(cMsg, callback);
     }
 
     @Override

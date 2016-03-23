@@ -19,6 +19,7 @@ package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
 public class MIMEType {
     public static final String HTML = "text/html";
+    public static final String INPUT_STREAM = "INPUT STREAM";
     public static final String JSON = "application/json";
     public static final String XML = "application/xml";
 }

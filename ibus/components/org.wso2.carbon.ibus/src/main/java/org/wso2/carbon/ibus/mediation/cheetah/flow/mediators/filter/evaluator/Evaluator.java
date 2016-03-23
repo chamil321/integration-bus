@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.ibus.mediation.cheetah.flow.mediators.filter.evaluator;
 
-import org.wso2.carbon.ibus.mediation.cheetah.flow.mediators.filter.Condition;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.mediators.filter.Source;
 import org.wso2.carbon.messaging.CarbonMessage;
 

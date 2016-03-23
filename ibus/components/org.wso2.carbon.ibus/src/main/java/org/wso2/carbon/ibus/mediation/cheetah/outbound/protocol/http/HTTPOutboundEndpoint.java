@@ -19,8 +19,6 @@
 package org.wso2.carbon.ibus.mediation.cheetah.outbound.protocol.http;
 
 import org.wso2.carbon.ibus.ServiceContextHolder;
-import org.wso2.carbon.ibus.mediation.cheetah.config.CheetahConfigRegistry;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.FlowControllerCallback;
 import org.wso2.carbon.ibus.mediation.cheetah.outbound.OutboundEndpoint;
 import org.wso2.carbon.messaging.CarbonCallback;
 import org.wso2.carbon.messaging.CarbonMessage;
