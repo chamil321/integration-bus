@@ -19,9 +19,14 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 import org.wso2.carbon.ibus.mediation.cheetah.CheetahMessageProcessor;
 import org.wso2.carbon.ibus.mediation.cheetah.config.CheetahConfigRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.config.dsl.external.deployer.IFlowDeployer;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters.CarbonMessageReverseTypeConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters.CarbonMessageToDocumentConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters.XMLtoJSONTypeConverter;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.DispatcherRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.manager.InboundEndpointManager;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.protocols.http.HTTPInboundEPDispatcher;
@@ -30,10 +35,15 @@ import org.wso2.carbon.messaging.CarbonMessage;
 import org.wso2.carbon.messaging.CarbonMessageProcessor;
 import org.wso2.carbon.messaging.TransportListenerManager;
 
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.transform.stream.StreamSource;
+import java.io.InputStream;
+
 /**
  * OSGi Bundle Activator of the Cheetah Carbon component.
  */
-
 public class Activator implements BundleActivator {
 
     private static final Logger log = LoggerFactory.getLogger(Activator.class);
@@ -64,22 +74,26 @@ public class Activator implements BundleActivator {
     }
 
     private void addTypeConverters(CheetahConfigRegistry cheetahConfigRegistry) {
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(Document.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(InputStream.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(DOMSource.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(SAXSource.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StAXSource.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StreamSource.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(String.class, CarbonMessage.class,
-//                new CarbonMessageTypeConverter());
-//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(CarbonMessage.class, String.class,
-//                new CarbonMessageReverseTypeConverter());
+
+
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(Document.class, CarbonMessage.class,
+                new CarbonMessageToDocumentConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(InputStream.class, CarbonMessage.class,
+                new CarbonMessageTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(DOMSource.class, CarbonMessage.class,
+                new CarbonMessageTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(SAXSource.class, CarbonMessage.class,
+                new CarbonMessageTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StAXSource.class, CarbonMessage.class,
+                new CarbonMessageTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StreamSource.class, CarbonMessage.class,
+                new CarbonMessageTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(String.class, CarbonMessage.class,
+                new CarbonMessageTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(CarbonMessage.class, String.class,
+                (TypeConverter) new CarbonMessageReverseTypeConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter("JSON","XML",
+                new XMLtoJSONTypeConverter());
 
     }
 

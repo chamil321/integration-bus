@@ -19,6 +19,8 @@ package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
 import org.apache.log4j.Logger;
 import org.wso2.carbon.ibus.mediation.cheetah.config.CheetahConfigRegistry;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.messaging.CarbonMessage;
 
 import java.io.InputStream;
@@ -34,9 +36,9 @@ public class ConversionManager {
         return manager;
     }
 
-    public Object convertTo(CarbonMessage cMsgWrapper, String sourceType, String targetType) {
+    public Object convertTo(CarbonMessage cMsg, String sourceType, String targetType) {
         TypeConverter converter = CheetahConfigRegistry.getInstance()
-                                            .getTypeConverterRegistry().lookup(sourceType, targetType);
+                .getTypeConverterRegistry().lookup(sourceType, targetType);
 
         if(converter == null)
             return null;
@@ -44,7 +46,7 @@ public class ConversionManager {
         InputStream stream = null;
 
         try {
-            stream = converter.convertTo(sourceType, cMsgWrapper, targetType);
+            stream = converter.convert(cMsg);
         }
         catch (TypeConversionException e) {
             log.error("Error in converting from: " + sourceType +" to: " + targetType);

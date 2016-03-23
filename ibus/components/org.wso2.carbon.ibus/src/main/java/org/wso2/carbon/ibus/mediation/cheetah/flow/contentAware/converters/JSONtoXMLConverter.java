@@ -22,9 +22,9 @@ import de.odysseus.staxon.json.JsonXMLConfigBuilder;
 import de.odysseus.staxon.json.JsonXMLInputFactory;
 import de.odysseus.staxon.xml.util.PrettyXMLEventWriter;
 import org.apache.log4j.Logger;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.NoTypeConversionAvailableException;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.TypeConversionException;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.TypeConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.NoTypeConversionAvailableException;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.util.ByteBufferBackedInputStream;
 import org.wso2.carbon.messaging.CarbonMessage;
 
@@ -41,18 +41,9 @@ public class JSONtoXMLConverter implements TypeConverter {
     private static final Logger log = Logger.getLogger(ByteBufferBackedInputStream.class);
 
     @Override
-    public boolean allowNull() {
-        return false;
-    }
-
-    @Override
-    public <T> T convertTo(Class<T> type, Object value) throws TypeConversionException {
-        return null;
-    }
-
-    @Override
-    public InputStream convertTo(String sourceType, CarbonMessage cMsg, String targetType)
+    public InputStream convert(CarbonMessage cMsg)
             throws TypeConversionException {
+
         BlockingQueue<ByteBuffer> contentBuf = aggregateContent(cMsg);
         InputStream input = new ByteBufferBackedInputStream(contentBuf);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -83,28 +74,6 @@ public class JSONtoXMLConverter implements TypeConverter {
         return new ByteArrayInputStream(xml);
     }
 
-    @Override
-    public <T> T mandatoryConvertTo(Class<T> type, Object value)
-            throws TypeConversionException, NoTypeConversionAvailableException {
-        return null;
-    }
-
-    @Override
-    public <T> T mandatoryConvertTo(Class<T> type, CarbonMessage exchange, Object value)
-            throws TypeConversionException, NoTypeConversionAvailableException {
-        return null;
-    }
-
-    @Override
-    public <T> T tryConvertTo(Class<T> type, Object value) {
-        return null;
-    }
-
-    @Override
-    public <T> T tryConvertTo(Class<T> type, CarbonMessage exchange, Object value) {
-        return null;
-    }
-
     private BlockingQueue<ByteBuffer> aggregateContent(CarbonMessage msg) {
 
         try {
@@ -118,6 +87,10 @@ public class JSONtoXMLConverter implements TypeConverter {
         } catch (Exception e) {
             log.error("Error occurred during conversion from CarbonMessage", e);
         }
+        return null;
+    }
+
+    @Override public <T> T convert(Object anyValue) throws TypeConversionException {
         return null;
     }
 }

@@ -16,28 +16,21 @@
  * under the License.
  */
 
-package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
+package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters;
 
-import javax.xml.bind.annotation.XmlEnum;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
+import org.wso2.carbon.messaging.CarbonMessage;
 
 /**
- * Used to configure the logging levels
- *
- * @version
+ * This converts XML to JSON input stream
  */
-@XmlEnum public enum LoggingLevel {
+public class XMLtoJSONTypeConverter extends AbstractTypeConverter {
+    String sourceType = "XML";
+    String targetType = "JSON";
 
-    TRACE, DEBUG, INFO, WARN, ERROR, OFF;
-
-    /**
-     * Is the given logging level equal or higher than the current level.
-     */
-    public boolean isEnabled(LoggingLevel level) {
-        // off is always false
-        if (this == OFF || level == OFF) {
-            return false;
-        }
-
-        return this.compareTo(level) <= 0;
+    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+        return null;
     }
+
 }

@@ -20,8 +20,8 @@ package org.wso2.carbon.ibus.mediation.cheetah.config;
 
 
 import org.wso2.carbon.ibus.mediation.cheetah.flow.Pipeline;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.TypeConverter;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.TypeConverterRegistry;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverterRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.InboundEndpoint;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.manager.InboundEndpointManager;
 import org.wso2.carbon.ibus.mediation.cheetah.outbound.OutboundEndpoint;
@@ -174,44 +174,10 @@ public class CheetahConfigRegistry {
         outBoundEndpointMap.remove(outboundEndpoint);
     }
 
-    public TypeConverter getTypeConverter() {
-        if (typeConverter == null) {
-            synchronized (this) {
-                typeConverter = createTypeConverter();
-                try {
-                    // must add service eager
-                    addService(typeConverter);
-                } catch (Exception e) {
-                    throw ObjectHelper.wrapRuntimeCamelException(e);
-                }
-            }
-        }
-        return typeConverter;
-    }
-
     public TypeConverterRegistry getTypeConverterRegistry() {
-        if (typeConverterRegistry == null) {
-            // init type converter as its lazy
-            if (typeConverter == null) {
-                getTypeConverter();
-            }
-            if (typeConverter instanceof TypeConverterRegistry) {
-                typeConverterRegistry = (TypeConverterRegistry) typeConverter;
-            }
-        }
-        return typeConverterRegistry;
+        return typeConverterRegistry.getInstance();
     }
 
-    protected TypeConverter createTypeConverter() {
-        BaseTypeConverterRegistry answer;
-        if (isLazyLoadTypeConverters()) {
-            answer = new LazyLoadingTypeConverter(packageScanClassResolver, getInjector(), getDefaultFactoryFinder());
-        } else {
-            answer = new DefaultTypeConverter(packageScanClassResolver, getInjector(), getDefaultFactoryFinder());
-        }
-        setTypeConverterRegistry(answer);
-        return answer;
-    }
 
 
 
