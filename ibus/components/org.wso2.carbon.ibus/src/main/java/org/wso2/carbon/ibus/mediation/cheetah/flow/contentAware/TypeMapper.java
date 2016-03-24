@@ -19,7 +19,7 @@
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
 /**
- * Created by chamile on 3/16/16.
+ * map converters with source type and target Type
  */
 public class TypeMapper {
 
