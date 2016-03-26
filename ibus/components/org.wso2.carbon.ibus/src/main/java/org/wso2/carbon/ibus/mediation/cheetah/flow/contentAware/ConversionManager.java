@@ -17,7 +17,8 @@
 
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.config.CheetahConfigRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
@@ -26,8 +27,8 @@ import org.wso2.carbon.messaging.CarbonMessage;
 import java.io.InputStream;
 
 public class ConversionManager {
+    private static final Logger log = LoggerFactory.getLogger(ConversionManager.class);
     private static ConversionManager manager;
-    private static final Logger log = Logger.getLogger(ConversionManager.class);
 
     public static ConversionManager getInstance() {
         if(manager == null)
@@ -36,7 +37,7 @@ public class ConversionManager {
         return manager;
     }
 
-    public Object convertTo(CarbonMessage cMsg, String sourceType, String targetType) {
+    public InputStream convertTo(CarbonMessage cMsg, String sourceType, String targetType) {
         TypeConverter converter = CheetahConfigRegistry.getInstance()
                 .getTypeConverterRegistry().lookup(sourceType, targetType);
 

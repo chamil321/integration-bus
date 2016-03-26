@@ -22,7 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverterRegistry;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters.JSONtoXMLConverter;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,18 +35,44 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class BaseTypeConverterRegistry implements TypeConverterRegistry {
 
-    protected final ConcurrentMap<TypeMapper, TypeConverter> typeMapping = new ConcurrentHashMap<TypeMapper, TypeConverter>();
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-    private BaseTypeConverterRegistry baseTypeConverterRegistry;
+    protected final static Logger log = LoggerFactory.getLogger(BaseTypeConverterRegistry.class);
 
-    @Override public BaseTypeConverterRegistry getInstance() {
+    protected final ConcurrentMap<TypeMapper, TypeConverter> typeMapping = new ConcurrentHashMap<TypeMapper, TypeConverter>();
+    private static BaseTypeConverterRegistry baseTypeConverterRegistry;
+
+    private BaseTypeConverterRegistry() {
+        File convertersFile;
+
+        try{
+            convertersFile = new File(System.getProperty("carbon.home")
+                    + File.separator + "conf" + File.separator + "content-aware-mediation"
+                    + File.separator + "type-converters.yml");
+
+            Scanner in = new Scanner(convertersFile);
+            String s = "";
+            while(in.hasNext()) {
+                s += in.nextLine();
+            }
+
+            System.out.println(s);
+            log.info(s);
+        }
+        catch(IOException e) {
+            log.error("File not found", e);
+        }
+    }
+
+    public static BaseTypeConverterRegistry getInstance() {
         if (baseTypeConverterRegistry == null) {
             baseTypeConverterRegistry = new BaseTypeConverterRegistry();
+            TypeConverter converter = new JSONtoXMLConverter();
+            baseTypeConverterRegistry.addTypeConverter(MIMEType.XML, MIMEType.JSON, converter);
         }
         return baseTypeConverterRegistry;
     }
 
-    @Override public void addTypeConverter(Class<?> toType, Class<?> fromType, TypeConverter typeConverter) {
+    @Override
+    public void addTypeConverter(Class<?> toType, Class<?> fromType, TypeConverter typeConverter) {
         log.trace("Adding type converter: {}", typeConverter);
         TypeMapper key = new TypeMapper(toType.getName(), fromType.getName());
         TypeConverter converter = typeMapping.get(key);
@@ -56,14 +86,27 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
         }
     }
 
-    @Override public void addTypeConverter(String targetType, String sourceType, TypeConverter typeConverter) {
+    @Override
+    public void addTypeConverter(String targetType, String sourceType, TypeConverter typeConverter) {
+        log.trace("Adding type converter: {}", typeConverter);
 
+        TypeMapper key = new TypeMapper(targetType, sourceType);
+        TypeConverter converter = typeMapping.get(key);
+
+        if(converter != typeConverter) {
+            if(converter == null) {
+                typeMapping.put(key, typeConverter);
+            }
+        }
     }
 
-    @Override public boolean removeTypeConverter(Class<?> toType, Class<?> fromType) {
+    @Override
+    public boolean removeTypeConverter(Class<?> toType, Class<?> fromType) {
         log.trace("Removing type converter from: {} to: {}", fromType, toType);
+
         TypeMapper key = new TypeMapper(toType.getName(), fromType.getName());
         TypeConverter converter = typeMapping.remove(key);
+
         if (converter != null) {
             typeMapping.remove(key);
         }
@@ -71,7 +114,8 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
 
     }
 
-    @Override public void addFallbackTypeConverter(TypeConverter typeConverter, boolean canPromote) {
+    @Override
+    public void addFallbackTypeConverter(TypeConverter typeConverter, boolean canPromote) {
 
     }
 
@@ -80,8 +124,9 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
         return typeMapping.get(key);
     }
 
-    @Override public TypeConverter lookup(String toType, String fromType) {
-        return null;
+    @Override
+    public TypeConverter lookup(String toType, String fromType) {
+        return typeMapping.get(new TypeMapper(toType, fromType));
     }
 
 }

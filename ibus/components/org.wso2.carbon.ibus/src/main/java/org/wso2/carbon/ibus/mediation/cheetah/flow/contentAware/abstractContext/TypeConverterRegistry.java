@@ -28,12 +28,6 @@ import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeC
 public interface TypeConverterRegistry {
 
     /**
-     * get singleton object of class
-     *
-     */
-    BaseTypeConverterRegistry getInstance();
-
-    /**
      * Registers a new type converter.
      * <p/>
      * This method may throw {@link TypeConverterExistsException} if configured to fail if an existing
@@ -89,12 +83,4 @@ public interface TypeConverterRegistry {
      * @return the type converter or <tt>null</tt> if not found.
      */
     TypeConverter lookup(String toType, String fromType);
-
-    /**
-     * Gets a read-only list of the type converter from / to classes
-     *
-     * @return a list containing fromType/toType class names
-     */
-
-
 }

@@ -21,8 +21,8 @@ import de.odysseus.staxon.json.JsonXMLConfig;
 import de.odysseus.staxon.json.JsonXMLConfigBuilder;
 import de.odysseus.staxon.json.JsonXMLInputFactory;
 import de.odysseus.staxon.xml.util.PrettyXMLEventWriter;
-import org.apache.log4j.Logger;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.NoTypeConversionAvailableException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.util.ByteBufferBackedInputStream;
@@ -38,11 +38,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JSONtoXMLConverter implements TypeConverter {
-    private static final Logger log = Logger.getLogger(ByteBufferBackedInputStream.class);
+    private static final Logger log = LoggerFactory.getLogger(JSONtoXMLConverter.class);
 
     @Override
-    public InputStream convert(CarbonMessage cMsg)
-            throws TypeConversionException {
+    public InputStream convert(CarbonMessage cMsg) throws TypeConversionException {
 
         BlockingQueue<ByteBuffer> contentBuf = aggregateContent(cMsg);
         InputStream input = new ByteBufferBackedInputStream(contentBuf);
@@ -64,10 +63,10 @@ public class JSONtoXMLConverter implements TypeConverter {
             input.close();
         }
         catch (XMLStreamException e) {
-            log.error(e);
+            log.error("Error in XML stream", e);
         }
         catch (IOException e) {
-            log.error(e);
+            log.error("Error in I/O", e);
         }
 
         byte[] xml = output.toByteArray();
@@ -90,7 +89,8 @@ public class JSONtoXMLConverter implements TypeConverter {
         return null;
     }
 
-    @Override public <T> T convert(Object anyValue) throws TypeConversionException {
+    @Override
+    public <T> T convert(Object anyValue) throws TypeConversionException {
         return null;
     }
 }

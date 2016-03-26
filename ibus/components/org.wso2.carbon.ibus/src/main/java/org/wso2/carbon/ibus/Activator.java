@@ -78,18 +78,18 @@ public class Activator implements BundleActivator {
 
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(Document.class, CarbonMessage.class,
                 new CarbonMessageToDocumentConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(InputStream.class, CarbonMessage.class,
-                new CarbonMessageTypeConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(DOMSource.class, CarbonMessage.class,
-                new CarbonMessageTypeConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(SAXSource.class, CarbonMessage.class,
-                new CarbonMessageTypeConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StAXSource.class, CarbonMessage.class,
-                new CarbonMessageTypeConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StreamSource.class, CarbonMessage.class,
-                new CarbonMessageTypeConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(String.class, CarbonMessage.class,
-                new CarbonMessageTypeConverter());
+//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(InputStream.class, CarbonMessage.class,
+//                new CarbonMessageTypeConverter());
+//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(DOMSource.class, CarbonMessage.class,
+//                new CarbonMessageTypeConverter());
+//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(SAXSource.class, CarbonMessage.class,
+//                new CarbonMessageTypeConverter());
+//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StAXSource.class, CarbonMessage.class,
+//                new CarbonMessageTypeConverter());
+//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StreamSource.class, CarbonMessage.class,
+//                new CarbonMessageTypeConverter());
+//        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(String.class, CarbonMessage.class,
+//                new CarbonMessageTypeConverter());
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(CarbonMessage.class, String.class,
                 (TypeConverter) new CarbonMessageReverseTypeConverter());
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter("JSON","XML",

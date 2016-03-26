@@ -20,6 +20,7 @@ package org.wso2.carbon.ibus.mediation.cheetah.config;
 
 
 import org.wso2.carbon.ibus.mediation.cheetah.flow.Pipeline;
+import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.BaseTypeConverterRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverterRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.inbound.InboundEndpoint;
@@ -50,17 +51,13 @@ public class CheetahConfigRegistry {
 
     private Map<String, ESBConfigHolder> configurations = new HashMap<>();
 
-    private TypeConverterRegistry typeConverterRegistry;
-
     private TypeConverter typeConverter;
 
     public static CheetahConfigRegistry getInstance() {
         return cheetahConfigRegistry;
     }
 
-    private CheetahConfigRegistry() {
-
-    }
+    private CheetahConfigRegistry() {}
 
     public void addESBConfig(ESBConfigHolder config) {
         configurations.put(config.getName(), config);
@@ -175,11 +172,6 @@ public class CheetahConfigRegistry {
     }
 
     public TypeConverterRegistry getTypeConverterRegistry() {
-        return typeConverterRegistry.getInstance();
+        return BaseTypeConverterRegistry.getInstance();
     }
-
-
-
-
-
 }

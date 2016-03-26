@@ -74,6 +74,11 @@
                 <exclude>empty.txt</exclude>
             </excludes>
         </fileSet>
+        <fileSet>
+            <directory>carbon-home/conf/content-aware-mediation</directory>
+            <outputDirectory>conf/content-aware-mediation</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
     </fileSets>
 
     <files>

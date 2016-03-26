@@ -18,7 +18,8 @@
 
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
 import org.wso2.carbon.messaging.CarbonMessage;
@@ -33,7 +34,7 @@ import java.nio.ByteBuffer;
  */
 
 public class CarbonMessageReverseTypeConverter extends AbstractTypeConverter {
-    private static final Logger log = Logger.getLogger(CarbonMessageTypeConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(CarbonMessageReverseTypeConverter.class);
 
     @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
         return null;

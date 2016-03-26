@@ -92,14 +92,8 @@ public class HTTPInboundEP extends InboundEndpoint {
         if (log.isDebugEnabled()) {
             log.debug("HTTP Endpoint : " + getName() + " received the message");
         }
-        
-        String targetType = cMsg.getHeader("Content-Type");
-        CheetahConfigRegistry configRegistry = CheetahConfigRegistry.getInstance();
 
-        Object convertedBody = ConversionManager.getInstance()
-                                        .convertTo(cMsg, MIMEType.INPUT_STREAM, targetType);
-
-        return configRegistry.getPipeline(getPipeline()).receive(cMsg, callback);
+        return super.receive(cMsg, callback);
     }
 
     @Override

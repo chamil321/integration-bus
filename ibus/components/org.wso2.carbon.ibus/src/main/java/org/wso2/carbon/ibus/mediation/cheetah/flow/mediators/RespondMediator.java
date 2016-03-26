@@ -34,7 +34,7 @@ public class RespondMediator extends AbstractMediator {
     }
 
     @Override
-    public boolean receive(CarbonMessage cMsgWrapper, CarbonCallback carbonCallback)
+    public boolean receive(CarbonMessage cMsg, CarbonCallback carbonCallback)
             throws Exception {
 
         CarbonCallback parentCallback = carbonCallback;
@@ -44,7 +44,7 @@ public class RespondMediator extends AbstractMediator {
             parentCallback = ((FlowControllerCallback) parentCallback).getParentCallback();
         }
 
-        parentCallback.done(cMsgWrapper.getCarbonMessage());
+        parentCallback.done(cMsg);
         return true;
     }
 }

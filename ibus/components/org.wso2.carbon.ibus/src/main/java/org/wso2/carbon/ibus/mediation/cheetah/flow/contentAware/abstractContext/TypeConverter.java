@@ -58,7 +58,4 @@ public interface TypeConverter {
      * @throws TypeConversionException is thrown if error during type conversion
      */
     //<T> T convert(Class<T> type, CarbonMessageWrapper carbonMessageWrapper, Object value) throws TypeConversionException;
-
-
-
 }
