@@ -72,6 +72,7 @@ public class XMLtoJSONTypeConverter extends AbstractTypeConverter {
         }
 
         return results;
+        //return null;
     }
 
     /*public static void main(String[] args) throws IOException, TypeConversionException {

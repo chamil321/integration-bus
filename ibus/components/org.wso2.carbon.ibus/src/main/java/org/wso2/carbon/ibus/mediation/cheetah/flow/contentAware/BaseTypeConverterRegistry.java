@@ -57,6 +57,17 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
     }
 
     @Override public void addTypeConverter(String targetType, String sourceType, TypeConverter typeConverter) {
+        log.trace("Adding type converter: {}", typeConverter);
+        TypeMapper key = new TypeMapper(targetType, sourceType);
+        TypeConverter converter = typeMapping.get(key);
+        if (typeConverter != converter) {
+            //boolean add = true;
+            if (converter == null) {
+                typeMapping.put(key, typeConverter);
+            } else {
+                //different converter exist
+            }
+        }
 
     }
 

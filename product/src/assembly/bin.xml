@@ -74,6 +74,11 @@
                 <exclude>empty.txt</exclude>
             </excludes>
         </fileSet>
+        <fileSet>
+            <directory>carbon-home/deployment/type-converters</directory>
+            <outputDirectory>deployment/type-converters</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
     </fileSets>
 
     <files>
