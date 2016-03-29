@@ -22,9 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.config.CheetahConfigRegistry;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
+import org.wso2.carbon.ibus.util.ByteBufferBackedInputStream;
 import org.wso2.carbon.messaging.CarbonMessage;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ConversionManager {
     private static final Logger log = LoggerFactory.getLogger(ConversionManager.class);
@@ -44,15 +48,34 @@ public class ConversionManager {
         if(converter == null)
             return null;
 
-        InputStream stream = null;
+        BlockingQueue<ByteBuffer> contentBuf = aggregateContent(cMsg);
+        InputStream input = new ByteBufferBackedInputStream(contentBuf);
+
+        InputStream convertedStream = null;
 
         try {
-            stream = converter.convert(cMsg);
+            convertedStream = converter.convert(input);
         }
         catch (TypeConversionException e) {
             log.error("Error in converting from: " + sourceType +" to: " + targetType);
         }
 
-        return stream;
+        return convertedStream;
+    }
+
+    private BlockingQueue<ByteBuffer> aggregateContent(CarbonMessage msg) {
+
+        try {
+            //Check whether the message is fully read
+            while (!msg.isEndOfMsgAdded()) {
+                Thread.sleep(10);
+            }
+            //Get a clone of content chunk queue from the pipe
+            BlockingQueue<ByteBuffer> content = new LinkedBlockingQueue<>(msg.getFullMessageBody());
+            return content;
+        } catch (Exception e) {
+            log.error("Error occurred during conversion from CarbonMessage", e);
+        }
+        return null;
     }
 }

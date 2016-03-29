@@ -16,7 +16,7 @@
 
 converterConfigurations:
  -
-  groupId:
-  artifactId:
-  version:
-  converterClass:
+  artifactId: jsontoxml-1.0-SNAPSHOT.jar
+  converterClass: xyz.pubudu.jsontoxml.JSONtoXMLConverter
+  from: application/json
+  to: application/xml

@@ -22,13 +22,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverter;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.TypeConverterRegistry;
-import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters.JSONtoXMLConverter;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base implementation of a type converter registry
@@ -36,26 +41,50 @@ import java.util.concurrent.ConcurrentMap;
 public class BaseTypeConverterRegistry implements TypeConverterRegistry {
 
     protected final static Logger log = LoggerFactory.getLogger(BaseTypeConverterRegistry.class);
-
-    protected final ConcurrentMap<TypeMapper, TypeConverter> typeMapping = new ConcurrentHashMap<TypeMapper, TypeConverter>();
     private static BaseTypeConverterRegistry baseTypeConverterRegistry;
+
+    protected final Map<TypeMapper, TypeConverter> typeMapping = new HashMap<>();
 
     private BaseTypeConverterRegistry() {
         File convertersFile;
 
         try{
-            convertersFile = new File(System.getProperty("carbon.home")
-                    + File.separator + "conf" + File.separator + "content-aware-mediation"
-                    + File.separator + "type-converters.yml");
+            String carbonHome = System.getProperty("carbon.home");
+            convertersFile = new File(carbonHome + File.separator + "conf" + File.separator + "content-aware-mediation"
+                                        + File.separator + "type-converters.yml");
 
-            Scanner in = new Scanner(convertersFile);
-            String s = "";
-            while(in.hasNext()) {
-                s += in.nextLine();
-            }
+            InputStream inputStream = new FileInputStream(convertersFile);
+            Yaml yaml = new Yaml();
 
-            System.out.println(s);
-            log.info(s);
+            Map<String, Object> rootMap = (Map<String, Object>) yaml.load(inputStream);
+            List<Map<String, String>> convertersList = (List<Map<String, String>>)
+                                                            rootMap.get("converterConfigurations");
+
+            convertersList.forEach(converterEntry -> {
+                File file = new File(System.getProperty("carbon.home") + File.separator + "deployment"
+                            + File.separator + "type-converters" + File.separator + converterEntry.get("artifactId"));
+                URL url;
+
+                ClassLoader loader;
+                Class clazz;
+
+                try {
+                    url = file.toURI().toURL();
+                    loader = URLClassLoader.newInstance(new URL[]{url}, getClass().getClassLoader());
+                    clazz = loader.loadClass(converterEntry.get("converterClass"));
+                    TypeMapper mapper = new TypeMapper(converterEntry.get("to"), converterEntry.get("from"));
+                    typeMapping.put(mapper, (TypeConverter)clazz.newInstance());
+                    log.info(typeMapping.toString());
+                } catch (MalformedURLException e) {
+                    log.error("URL of the artifact not valid", e);
+                } catch (ClassNotFoundException e) {
+                    log.error("Specified converter not found: " + converterEntry.get("converterClass"));
+                } catch (InstantiationException e) {
+                    log.error("Specified class cannot be instantiated: " + converterEntry.get("converterClass"));
+                } catch (IllegalAccessException e) {
+                    log.error("Specified class cannot be accessed: " + converterEntry.get("converterClass"));
+                }
+            });
         }
         catch(IOException e) {
             log.error("File not found", e);
@@ -65,8 +94,6 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
     public static BaseTypeConverterRegistry getInstance() {
         if (baseTypeConverterRegistry == null) {
             baseTypeConverterRegistry = new BaseTypeConverterRegistry();
-            TypeConverter converter = new JSONtoXMLConverter();
-            baseTypeConverterRegistry.addTypeConverter(MIMEType.XML, MIMEType.JSON, converter);
         }
         return baseTypeConverterRegistry;
     }

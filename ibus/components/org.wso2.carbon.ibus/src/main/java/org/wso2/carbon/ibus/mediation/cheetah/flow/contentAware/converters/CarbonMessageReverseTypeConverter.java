@@ -22,11 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
-import org.wso2.carbon.messaging.CarbonMessage;
-import org.wso2.carbon.messaging.DefaultCarbonMessage;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
+import java.io.InputStream;
 
 /**
  * A type converter which is used to convert to and from CarbonMessage to other types
@@ -36,24 +33,24 @@ import java.nio.ByteBuffer;
 public class CarbonMessageReverseTypeConverter extends AbstractTypeConverter {
     private static final Logger log = LoggerFactory.getLogger(CarbonMessageReverseTypeConverter.class);
 
-    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+    @Override public InputStream convert(InputStream input) throws TypeConversionException {
         return null;
     }
 
-    @Override public <T> T convert(Object value) throws TypeConversionException {
-        if (value instanceof String) {
-            try {
-                CarbonMessage carbonMessage = new DefaultCarbonMessage();
-                ByteBuffer byteBuffer = ByteBuffer.wrap(((String) value).getBytes("UTF-8"));
-                //Set the content length of the new message
-                carbonMessage.setProperty("Content-Length", String.valueOf(byteBuffer.limit()));
-                carbonMessage.addMessageBody(byteBuffer);
-                carbonMessage.setEndOfMsgAdded(true);
-                return (T) carbonMessage;
-            } catch (UnsupportedEncodingException e) {
-                log.error("Encoding type is not supported", e);
-            }
-        }
+    @Override public InputStream convert(Object value) throws TypeConversionException {
+//        if (value instanceof String) {
+//            try {
+//                CarbonMessage carbonMessage = new DefaultCarbonMessage();
+//                ByteBuffer byteBuffer = ByteBuffer.wrap(((String) value).getBytes("UTF-8"));
+//                //Set the content length of the new message
+//                carbonMessage.setProperty("Content-Length", String.valueOf(byteBuffer.limit()));
+//                carbonMessage.addMessageBody(byteBuffer);
+//                carbonMessage.setEndOfMsgAdded(true);
+//                return carbonMessage;
+//            } catch (UnsupportedEncodingException e) {
+//                log.error("Encoding type is not supported", e);
+//            }
+//        }
         return null;
     }
 }

@@ -20,13 +20,14 @@ package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters;
 
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
-import org.wso2.carbon.messaging.CarbonMessage;
+
+import java.io.InputStream;
 
 /**
  * This converts CarbonMessage to DomSource
  */
 public class CarbonMessageToStringConverter extends AbstractTypeConverter {
-    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+    @Override public InputStream convert(InputStream input) throws TypeConversionException {
         return null;
     }
 }

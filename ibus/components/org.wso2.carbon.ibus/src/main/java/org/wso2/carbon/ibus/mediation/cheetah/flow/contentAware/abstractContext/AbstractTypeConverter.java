@@ -19,17 +19,20 @@
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext;
 
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
-import org.wso2.carbon.messaging.CarbonMessage;
+
+import java.io.InputStream;
 
 /**
  * implements the type converter.
  */
 public abstract class AbstractTypeConverter implements TypeConverter {
-    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+    @Override
+    public InputStream convert(InputStream input) throws TypeConversionException {
         return null;
     }
 
-    @Override public <T> T convert(Object anyValue) throws TypeConversionException {
+    @Override
+    public InputStream convert(Object anyValue) throws TypeConversionException {
         return null;
     }
 }

@@ -51,8 +51,6 @@ public class CheetahConfigRegistry {
 
     private Map<String, ESBConfigHolder> configurations = new HashMap<>();
 
-    private TypeConverter typeConverter;
-
     public static CheetahConfigRegistry getInstance() {
         return cheetahConfigRegistry;
     }

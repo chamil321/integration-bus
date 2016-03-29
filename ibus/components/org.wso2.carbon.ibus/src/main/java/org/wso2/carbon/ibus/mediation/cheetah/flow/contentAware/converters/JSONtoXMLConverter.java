@@ -41,10 +41,10 @@ public class JSONtoXMLConverter implements TypeConverter {
     private static final Logger log = LoggerFactory.getLogger(JSONtoXMLConverter.class);
 
     @Override
-    public InputStream convert(CarbonMessage cMsg) throws TypeConversionException {
+    public InputStream convert(InputStream input) throws TypeConversionException {
 
-        BlockingQueue<ByteBuffer> contentBuf = aggregateContent(cMsg);
-        InputStream input = new ByteBufferBackedInputStream(contentBuf);
+//        BlockingQueue<ByteBuffer> contentBuf = aggregateContent(cMsg);
+//        InputStream input = new ByteBufferBackedInputStream(contentBuf);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         JsonXMLConfig config = new JsonXMLConfigBuilder().multiplePI(false).build();
@@ -90,7 +90,7 @@ public class JSONtoXMLConverter implements TypeConverter {
     }
 
     @Override
-    public <T> T convert(Object anyValue) throws TypeConversionException {
+    public InputStream convert(Object anyValue) throws TypeConversionException {
         return null;
     }
 }

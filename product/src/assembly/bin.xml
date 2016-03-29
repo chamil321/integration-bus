@@ -79,6 +79,11 @@
             <outputDirectory>conf/content-aware-mediation</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
+        <fileSet>
+            <directory>carbon-home/deployment/type-converters</directory>
+            <outputDirectory>deployment/type-converters</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
     </fileSets>
 
     <files>

@@ -20,7 +20,8 @@ package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.converters;
 
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.AbstractTypeConverter;
-import org.wso2.carbon.messaging.CarbonMessage;
+
+import java.io.InputStream;
 
 /**
  * This converts XML to JSON input stream
@@ -29,7 +30,7 @@ public class XMLtoJSONTypeConverter extends AbstractTypeConverter {
     String sourceType = "XML";
     String targetType = "JSON";
 
-    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+    @Override public InputStream convert(InputStream input) throws TypeConversionException {
         return null;
     }
 

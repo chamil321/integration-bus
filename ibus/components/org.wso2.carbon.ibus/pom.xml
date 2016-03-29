@@ -90,6 +90,11 @@
             <artifactId>staxon</artifactId>
             <version>1.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.17</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -392,6 +397,7 @@
             org.antlr.v4.runtime.*,
             javax.xml.stream.*,
             org.w3c.dom.*,
+            org.yaml.snakeyaml.*,
             org.wso2.carbon.messaging.*;version="${carbon.messaging.package.import.version.range}"
         </import.package>
     </properties>
