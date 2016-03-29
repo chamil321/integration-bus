@@ -18,8 +18,11 @@
 
 package org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext;
 
+import org.omg.CORBA.portable.InputStream;
 import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.exceptions.TypeConversionException;
 import org.wso2.carbon.messaging.CarbonMessage;
+
+import java.io.IOException;
 
 /**
  * This implements different type converters
@@ -30,11 +33,11 @@ public interface TypeConverter {
     /**
      * Converts the value to the specified type
      *
-     * @param carbonMessage the cMsg
+     * @param inputStream the inputStream of cMsg
      * @return the converted value, or <tt>null</tt> if not possible to convert
      * @throws TypeConversionException is thrown if error during type conversion
      */
-    <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException;
+    java.io.InputStream convert(java.io.InputStream inputStream) throws TypeConversionException, IOException;
 
     /**
      * Converts the value to the specified type

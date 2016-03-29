@@ -390,7 +390,8 @@
             org.wso2.carbon.kernel.deployment.*;version="${carbon.kernel.package.import.version.range}",
             org.slf4j.*;version="${slf4j.logging.package.import.version.range}",
             org.antlr.v4.runtime.*,
-            org.wso2.carbon.messaging.*;version="${carbon.messaging.package.import.version.range}"
+            org.wso2.carbon.messaging.*;version="${carbon.messaging.package.import.version.range}",
+            org.w3c.dom.*;
         </import.package>
     </properties>
 

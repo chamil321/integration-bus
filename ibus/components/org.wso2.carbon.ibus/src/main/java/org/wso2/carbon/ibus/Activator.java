@@ -78,8 +78,10 @@ public class Activator implements BundleActivator {
                 new CarbonMessageToDocumentConverter());
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(InputStream.class, CarbonMessage.class,
                 new CarbonMessageToInputStreamConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(DOMSource.class, CarbonMessage.class,
-                new CarbonMessageToDomConverter());
+       // cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(DOMSource.class, CarbonMessage.class,
+        //        new CarbonMessageToDomConverter());
+        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter("JSON","XML",
+                new XMLtoJSONTypeConverter());
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(SAXSource.class, CarbonMessage.class,
                 new CarbonMessageToSAXConverter());
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(StAXSource.class, CarbonMessage.class,
@@ -90,8 +92,7 @@ public class Activator implements BundleActivator {
                 new CarbonMessageToStringConverter());
         cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter(CarbonMessage.class, String.class,
                 new CarbonMessageReverseTypeConverter());
-        cheetahConfigRegistry.getTypeConverterRegistry().addTypeConverter("JSON","XML",
-                new XMLtoJSONTypeConverter());
+
 
     }
 

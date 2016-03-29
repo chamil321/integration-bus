@@ -33,9 +33,9 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
 
     protected final ConcurrentMap<TypeMapper, TypeConverter> typeMapping = new ConcurrentHashMap<TypeMapper, TypeConverter>();
     protected final Logger log = LoggerFactory.getLogger(getClass());
-    private BaseTypeConverterRegistry baseTypeConverterRegistry;
+    private static BaseTypeConverterRegistry baseTypeConverterRegistry;
 
-    @Override public BaseTypeConverterRegistry getInstance() {
+    public static BaseTypeConverterRegistry getInstance() {
         if (baseTypeConverterRegistry == null) {
             baseTypeConverterRegistry = new BaseTypeConverterRegistry();
         }
@@ -75,12 +75,18 @@ public class BaseTypeConverterRegistry implements TypeConverterRegistry {
 
     }
 
-    public TypeConverter getTypeConverter(Class<?> targetType, Class<?> sourceType) {
+    /*public TypeConverter getTypeConverter(Class<?> targetType, Class<?> sourceType) {
         TypeMapper key = new TypeMapper(targetType.getName(), sourceType.getName());
+        return typeMapping.get(key);
+    }*/
+
+    public TypeConverter getTypeConverter(String targetType, String sourceType) {
+        TypeMapper key = new TypeMapper(targetType, sourceType);
         return typeMapping.get(key);
     }
 
     @Override public TypeConverter lookup(String toType, String fromType) {
+        getTypeConverter(toType, fromType);
         return null;
     }
 

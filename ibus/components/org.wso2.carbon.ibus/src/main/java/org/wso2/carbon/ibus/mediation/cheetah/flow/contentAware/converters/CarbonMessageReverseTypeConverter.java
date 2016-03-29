@@ -24,6 +24,7 @@ import org.wso2.carbon.ibus.mediation.cheetah.flow.contentAware.abstractContext.
 import org.wso2.carbon.messaging.CarbonMessage;
 import org.wso2.carbon.messaging.DefaultCarbonMessage;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
@@ -33,9 +34,9 @@ import java.nio.ByteBuffer;
  */
 
 public class CarbonMessageReverseTypeConverter extends AbstractTypeConverter {
-    private static final Logger log = Logger.getLogger(CarbonMessageTypeConverter.class);
+    private static final Logger log = Logger.getLogger(CarbonMessageReverseTypeConverter.class);
 
-    @Override public <T> T convert(CarbonMessage carbonMessage) throws TypeConversionException {
+    @Override public InputStream convert(InputStream inputStream) throws TypeConversionException {
         return null;
     }
 
